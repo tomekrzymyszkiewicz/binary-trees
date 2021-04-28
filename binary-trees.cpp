@@ -2,15 +2,20 @@
 //
 
 #include <iostream>
-#include "BST_Tree.h"
+//#include "BST_Tree.h"
+#include "BST_Node.h"
 
 using namespace std;
 int main()
 {
     std::cout << "Hello World!\n";
-    BST_Tree *tree = new BST_Tree();
-    tree->insert_node(5);
-    tree->print();
+    BST_Node tree();
+    
+    //BST_Tree *tree = new BST_Tree();
+    //tree->insert_node(1);
+    //tree->insert_node(2);
+    //tree->insert_node(3);
+    //tree->print();
 }
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania

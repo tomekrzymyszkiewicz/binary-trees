@@ -8,5 +8,6 @@ public:
     BST_Node(int key);
     ~BST_Node();
     void print();
+    void insert(BST_Node* root, int key);
 };
 
