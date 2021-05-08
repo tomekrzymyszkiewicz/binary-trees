@@ -7,10 +7,12 @@
 #include<chrono>
 #include<cstring>
 #include<algorithm>
+#include<conio.h>
 #include "BST.h"
 #include "BT.h"
 
 using namespace std;
+using namespace std::chrono;
 
 vector<int> data_vector;
 vector<vector<string>> tasks;
@@ -75,14 +77,14 @@ bool load_data(string file_name, int amount){
     return true;
 }
 
-bool load_config(){
+void load_config(){
     cout<<"Loading config.ini"<<endl;
     ifstream fin;
     fin.open("config.ini",ios::in);
     if(!fin.good()){
         cout<<"Config.ini not found"<<endl;
         fin.close();
-        return false;
+        return;
     }
     vector<string> row;
     string line;
@@ -105,12 +107,81 @@ bool load_config(){
     }
     fin.close();
     cout<<"Config loaded correctly"<<endl;
-    return true;
+    return;
 }
 
 int main()
 {
-       
+    load_config();
+    if(!load_data(data_file_name,data_amount)){
+        cout<<"Cannot load "<<data_amount<<" numbers from "<<data_file_name<<" file."<<endl;
+    }
+    if(tasks.size() == 0){
+        cout<<"No tasks found to be performed."<<endl;
+    }else{
+        for(int i = 0;i < tasks.size(); i++){
+            string structure = tasks[i][0];
+            string operation = tasks[i][1];
+            int min_size = stoi(tasks[i][2]);
+            int max_size = stoi(tasks[i][3]);
+            int step = stoi(tasks[i][4]);
+            int number_of_repeats = stoi(tasks[i][5]);
+            cout<<"Operation "<<operation<<" in "<<structure<<" in range from "<<min_size<<" to "<<max_size<<" with step "<<step<<" repeated "<<number_of_repeats<<" times"<<endl;
+            if(min_size<1){
+                cout<<"Cannot execute task. The array must to have at least 1 element.";
+            }else if(number_of_repeats<1){
+                cout<<"Cannot execute task. The minimum number of repetitions is 1.";
+            }else{
+                if(structure == "BST"){
+                    if(operation == "create"){
+                        for(int current_size = min_size; current_size <= max_size; current_size+=step){
+                            cout<<"Creating binary search tree with "<<current_size<<" elements"<<endl;
+                            high_resolution_clock::time_point t_start = high_resolution_clock::now();
+                            high_resolution_clock::time_point t_end = high_resolution_clock::now();
+                            duration<double> time_span = duration<double>(0);
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                t_start = high_resolution_clock::now();
+                                BST* root = nullptr;
+                                for(int j = 0; j < current_size; j++){
+                                    BST_insert_node(root,data_vector[j]);
+                                }
+                                t_end = high_resolution_clock::now();
+                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                                delete root;
+                            }
+                            Result BST_create_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BST_create_result.toString());
+                        }
+                    }else if(operation == "add"){
 
+                    }else if(operation == "delete"){
+
+                    }else if(operation == "search"){
+
+                    }else{
+                        cout<<"Cannot recognize operation "<<operation<<" in "<<structure<<" structure."; 
+                    }
+
+                }else if(structure == "BT"){
+                    if(operation == "create"){
+                        
+                    }else if(operation == "add"){
+
+                    }else if(operation == "delete"){
+
+                    }else if(operation == "search"){
+
+                    }else{
+                        cout<<"Cannot recognize operation "<<operation<<" in "<<structure<<" structure."; 
+                    }
+                }else{
+                    cout<<"Cannot recognize "<<structure<<" structure.";
+                }
+            }
+        }
+    }
+    save_results(results_file_name);
+    cout<<"Press any key to continue...";
+    getch();
     return 0;
 }
