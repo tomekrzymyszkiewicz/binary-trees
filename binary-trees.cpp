@@ -220,10 +220,25 @@ int main()
                     }else{
                         cout<<"Cannot recognize operation "<<operation<<" in "<<structure<<" structure."; 
                     }
-
                 }else if(structure == "BT"){
                     if(operation == "create"){
-                        
+                        for(int current_size = min_size; current_size <= max_size; current_size+=step){
+                            cout<<"Creating binary tree with "<<current_size<<" elements"<<endl;
+                            high_resolution_clock::time_point t_start = high_resolution_clock::now();
+                            high_resolution_clock::time_point t_end = high_resolution_clock::now();
+                            duration<double> time_span = duration<double>(0);
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                t_start = high_resolution_clock::now();
+                                BT tree = BT();
+                                for(int j = 0; j < current_size; j++){
+                                    tree.insert_node(data_vector[j]);
+                                }
+                                t_end = high_resolution_clock::now();
+                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                            }
+                            Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BST_result.toString());
+                        }
                     }else if(operation == "add"){
 
                     }else if(operation == "delete"){

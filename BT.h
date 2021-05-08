@@ -6,6 +6,7 @@ using namespace std;
 struct BT
 {
 	vector<int> BT_tree;
+
 	void insert_node(int key){
         BT_tree.push_back(key);
     }
