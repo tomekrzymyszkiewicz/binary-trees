@@ -149,8 +149,8 @@ int main()
                                 time_span += duration_cast<duration<double>>(t_end - t_start);
                                 delete root;
                             }
-                            Result BST_create_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
-                            results.push_back(BST_create_result.toString());
+                            Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BST_result.toString());
                         }
                     }else if(operation == "add"){
                         for(int current_size = min_size; current_size <= max_size; current_size+=step){
@@ -170,8 +170,8 @@ int main()
                                 time_span += duration_cast<duration<double>>(t_end - t_start);
                             }
                             delete root;
-                            Result BST_create_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
-                            results.push_back(BST_create_result.toString());
+                            Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BST_result.toString());
                         }
 
                     }else if(operation == "delete"){
