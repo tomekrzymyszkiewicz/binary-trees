@@ -236,11 +236,29 @@ int main()
                                 t_end = high_resolution_clock::now();
                                 time_span += duration_cast<duration<double>>(t_end - t_start);
                             }
-                            Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
-                            results.push_back(BST_result.toString());
+                            Result BT_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BT_result.toString());
                         }
                     }else if(operation == "add"){
-
+                        for(int current_size = min_size; current_size <= max_size; current_size+=step){
+                            cout<<"Adding element to binary tree with "<<current_size<<" elements"<<endl;
+                            high_resolution_clock::time_point t_start = high_resolution_clock::now();
+                            high_resolution_clock::time_point t_end = high_resolution_clock::now();
+                            duration<double> time_span = duration<double>(0);
+                            BT tree = BT();
+                            for(int j = 0; j < current_size; j++){
+                                tree.insert_node(data_vector[j]);
+                            }
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                t_start = high_resolution_clock::now();
+                                tree.insert_node(0);
+                                t_end = high_resolution_clock::now();
+                                tree.delete_node(0);
+                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                            }
+                            Result BT_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BT_result.toString());
+                        }
                     }else if(operation == "delete"){
 
                     }else if(operation == "search"){
