@@ -153,6 +153,26 @@ int main()
                             results.push_back(BST_create_result.toString());
                         }
                     }else if(operation == "add"){
+                        for(int current_size = min_size; current_size <= max_size; current_size+=step){
+                            cout<<"Adding element to binary search tree with "<<current_size<<" elements"<<endl;
+                            high_resolution_clock::time_point t_start = high_resolution_clock::now();
+                            high_resolution_clock::time_point t_end = high_resolution_clock::now();
+                            duration<double> time_span = duration<double>(0);
+                            BST* root = nullptr;
+                            for(int j = 0; j < current_size; j++){
+                                BST_insert_node(root,data_vector[j]);
+                            }
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                t_start = high_resolution_clock::now();
+                                BST_insert_node(root,0);
+                                t_end = high_resolution_clock::now();
+                                BST_delete_node(root,0);
+                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                            }
+                            delete root;
+                            Result BST_create_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BST_create_result.toString());
+                        }
 
                     }else if(operation == "delete"){
 
