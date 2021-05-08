@@ -195,7 +195,28 @@ int main()
                             results.push_back(BST_result.toString());
                         }
                     }else if(operation == "search"){
-
+                        srand(time(NULL));
+                        for(int current_size = min_size; current_size <= max_size; current_size+=step){
+                            cout<<"Searching element in binary search tree with "<<current_size<<" elements"<<endl;
+                            high_resolution_clock::time_point t_start = high_resolution_clock::now();
+                            high_resolution_clock::time_point t_end = high_resolution_clock::now();
+                            duration<double> time_span = duration<double>(0);
+                            BST* root = nullptr;
+                            for(int j = 0; j < current_size; j++){
+                                BST_insert_node(root,data_vector[j]);
+                            }
+                            t_start = high_resolution_clock::now();
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                int random_index = rand() % current_size;
+                                int searched_value = data_vector[random_index];
+                                BST_search_node(root,searched_value);
+                            }
+                            t_end = high_resolution_clock::now();
+                            time_span += duration_cast<duration<double>>(t_end - t_start);
+                            delete root;
+                            Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BST_result.toString());
+                        }
                     }else{
                         cout<<"Cannot recognize operation "<<operation<<" in "<<structure<<" structure."; 
                     }
