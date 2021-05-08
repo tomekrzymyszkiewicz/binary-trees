@@ -261,7 +261,7 @@ int main()
                         }
                     }else if(operation == "delete"){
                         for(int current_size = min_size; current_size <= max_size; current_size+=step){
-                            cout<<"Adding element to binary tree with "<<current_size<<" elements"<<endl;
+                            cout<<"Deleting element from binary tree with "<<current_size<<" elements"<<endl;
                             high_resolution_clock::time_point t_start = high_resolution_clock::now();
                             high_resolution_clock::time_point t_end = high_resolution_clock::now();
                             duration<double> time_span = duration<double>(0);
@@ -282,7 +282,26 @@ int main()
                             results.push_back(BT_result.toString());
                         }
                     }else if(operation == "search"){
-
+                        for(int current_size = min_size; current_size <= max_size; current_size+=step){
+                            cout<<"Searching element in binary tree with "<<current_size<<" elements"<<endl;
+                            high_resolution_clock::time_point t_start = high_resolution_clock::now();
+                            high_resolution_clock::time_point t_end = high_resolution_clock::now();
+                            duration<double> time_span = duration<double>(0);
+                            BT tree = BT();
+                            for(int j = 0; j < current_size; j++){
+                                tree.insert_node(data_vector[j]);
+                            }
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                int random_index = rand() % current_size;
+                                int searched_value = data_vector[random_index];
+                                t_start = high_resolution_clock::now();
+                                tree.search(searched_value);
+                                t_end = high_resolution_clock::now();
+                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                            }
+                            Result BT_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
+                            results.push_back(BT_result.toString());
+                        }
                     }else{
                         cout<<"Cannot recognize operation "<<operation<<" in "<<structure<<" structure."; 
                     }
