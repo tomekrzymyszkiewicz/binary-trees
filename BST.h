@@ -12,19 +12,20 @@ struct BST
 		left = nullptr;
 		right = nullptr;
 	};
-	~BST(){
-		delete this;
-	}
-	void DestroyBST(BST *&root){
-		if(root->left){
-			DestroyBST(root->left);
-		}
-		if(root->right){
-			DestroyBST(root->right);
-		}
-		delete root;
-	}
+	// ~BST(){
+	// 	delete this;
+	// }
 };
+
+void DestroyBST(BST *&root){
+	if(root->left){
+		DestroyBST(root->left);
+	}
+	if(root->right){
+		DestroyBST(root->right);
+	}
+	delete root;
+}
 
 BST* BST_insert_node(BST *&root, int key)
 {
