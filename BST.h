@@ -13,12 +13,16 @@ struct BST
 		right = nullptr;
 	};
 	~BST(){
-		if(left){
-			delete left;
+		delete this;
+	}
+	void DestroyBST(BST *&root){
+		if(root->left){
+			DestroyBST(root->left);
 		}
-		if(right){
-			delete right;
+		if(root->right){
+			DestroyBST(root->right);
 		}
+		delete root;
 	}
 };
 
