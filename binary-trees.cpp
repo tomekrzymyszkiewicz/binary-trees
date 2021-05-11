@@ -147,7 +147,7 @@ int main()
                                 }
                                 t_end = high_resolution_clock::now();
                                 time_span += duration_cast<duration<double>>(t_end - t_start);
-                                delete root;
+                                DestroyBST(root);
                             }
                             Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
                             results.push_back(BST_result.toString());
@@ -193,7 +193,6 @@ int main()
                                 BST_insert_node(root,random_value+1);
                                 time_span += duration_cast<duration<double>>(t_end - t_start);
                             }
-                            // delete root;
                             DestroyBST(root);
                             Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
                             results.push_back(BST_result.toString());
