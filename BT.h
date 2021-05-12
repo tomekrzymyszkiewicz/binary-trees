@@ -38,8 +38,9 @@ struct BT
     }
     int search(int key){
         for(int i = 0; i < BT_tree.size(); i++){
-            if(BT_tree[i] == key)
+            if(BT_tree[i] == key){
                 return i;
+            }
         }
         return -1;
     }
