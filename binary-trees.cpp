@@ -1,6 +1,7 @@
-﻿#include <iostream>
+﻿#include<iostream>
 #include<stdio.h>
 #include<random>
+#include<ctime>
 #include<ctime>
 #include<string>
 #include<fstream>
@@ -43,7 +44,7 @@ void save_results(string results_file_name){
     cout<<"Saving results"<<endl;
     fstream fout;
     fout.open(results_file_name,ios::out);
-    fout<<"sort_algorithm,size_of_array,time_of_sort_s/memory_usage,number_of_repetitions,type_of_test"<<endl;
+    fout<<"structure,operation,size_of_structure,time,number_of_repeats"<<endl;
     for(int i = 0; i < results.size(); i++){
         fout<<results[i]<<endl;
     }
@@ -248,19 +249,23 @@ int main()
                             high_resolution_clock::time_point t_start = high_resolution_clock::now();
                             high_resolution_clock::time_point t_end = high_resolution_clock::now();
                             duration<double> time_span = duration<double>(0);
-                            BT tree = BT();
-                            for(int j = 0; j < current_size; j++){
-                                tree.insert_node(data_vector[j]);
-                            }
+                            BT *table_of_trees = new BT[number_of_repeats];
+                            // BT tree = BT();
                             for(int repeat = 0; repeat < number_of_repeats; repeat++){
-                                t_start = high_resolution_clock::now();
-                                tree.insert_node(0);
-                                t_end = high_resolution_clock::now();
-                                tree.delete_node(0);
-                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                                table_of_trees[repeat] = BT();
+                                for(int j = 0; j < current_size; j++){
+                                    table_of_trees[repeat].insert_node(data_vector[j]);
+                                }
                             }
+                            t_start = high_resolution_clock::now();
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                table_of_trees[repeat].insert_node(0);
+                            }
+                            t_end = high_resolution_clock::now();
+                            time_span += duration_cast<duration<double>>(t_end - t_start);
                             Result BT_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
                             results.push_back(BT_result.toString());
+                            delete[] table_of_trees;
                         }
                     }else if(operation == "delete"){
                         for(int current_size = min_size; current_size <= max_size; current_size+=step){
@@ -285,18 +290,22 @@ int main()
                             results.push_back(BT_result.toString());
                         }
                     }else if(operation == "search"){
+                        // srand(time(NULL));
+                        
                         for(int current_size = min_size; current_size <= max_size; current_size+=step){
                             cout<<"Searching element in binary tree with "<<current_size<<" elements"<<endl;
                             high_resolution_clock::time_point t_start = high_resolution_clock::now();
                             high_resolution_clock::time_point t_end = high_resolution_clock::now();
                             duration<double> time_span = duration<double>(0);
+                            random_device rd;
+                            mt19937 gen(rd());
+                            uniform_int_distribution<> dis(0, current_size-1);
                             BT tree = BT();
                             for(int j = 0; j < current_size; j++){
                                 tree.insert_node(data_vector[j]);
                             }
                             for(int repeat = 0; repeat < number_of_repeats; repeat++){
-                                int random_index = rand() % current_size;
-                                int searched_value = data_vector[random_index];
+                                int searched_value = dis(gen);
                                 t_start = high_resolution_clock::now();
                                 tree.search(searched_value);
                                 t_end = high_resolution_clock::now();
