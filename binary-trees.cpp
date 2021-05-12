@@ -154,23 +154,35 @@ int main()
                             results.push_back(BST_result.toString());
                         }
                     }else if(operation == "add"){
+                        // srand(time(NULL));
                         for(int current_size = min_size; current_size <= max_size; current_size+=step){
                             cout<<"Adding element to binary search tree with "<<current_size<<" elements"<<endl;
                             high_resolution_clock::time_point t_start = high_resolution_clock::now();
                             high_resolution_clock::time_point t_end = high_resolution_clock::now();
                             duration<double> time_span = duration<double>(0);
-                            BST* root = nullptr;
-                            for(int j = 0; j < current_size; j++){
-                                BST_insert_node(root,data_vector[j]);
-                            }
+                            typedef BST* root_ptr;
+                            root_ptr *table_of_roots = new root_ptr[number_of_repeats];
+                            int *randoms_array = new int[number_of_repeats];
+                            random_device rd;
+                            mt19937 gen(rd());
+                            uniform_int_distribution<> dis(-1000000, 1000000);
                             for(int repeat = 0; repeat < number_of_repeats; repeat++){
-                                t_start = high_resolution_clock::now();
-                                BST_insert_node(root,0);
-                                t_end = high_resolution_clock::now();
-                                BST_delete_node(root,0);
-                                time_span += duration_cast<duration<double>>(t_end - t_start);
+                                table_of_roots[repeat] = nullptr;
+                                for(int j = 0; j < current_size; j++){
+                                    BST_insert_node(table_of_roots[repeat],data_vector[j]);
+                                }
+                                randoms_array[repeat] = dis(gen);
+                                // randoms_array[repeat] = rand() % RAND_MAX;
                             }
-                            delete root;
+                            
+                            t_start = high_resolution_clock::now();
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                BST_insert_node(table_of_roots[repeat],randoms_array[repeat]);
+                            }
+                            t_end = high_resolution_clock::now();
+                            time_span += duration_cast<duration<double>>(t_end - t_start);
+                            delete[] table_of_roots;
+                            delete[] randoms_array;
                             Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
                             results.push_back(BST_result.toString());
                         }
@@ -290,8 +302,6 @@ int main()
                             results.push_back(BT_result.toString());
                         }
                     }else if(operation == "search"){
-                        // srand(time(NULL));
-                        
                         for(int current_size = min_size; current_size <= max_size; current_size+=step){
                             cout<<"Searching element in binary tree with "<<current_size<<" elements"<<endl;
                             high_resolution_clock::time_point t_start = high_resolution_clock::now();
