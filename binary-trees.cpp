@@ -174,7 +174,6 @@ int main()
                                     BST_insert_node(table_of_roots[repeat],data_vector[j]);
                                 }
                                 randoms_array[repeat] = dis(gen);
-                                // randoms_array[repeat] = rand() % RAND_MAX;
                             }
                             t_start = high_resolution_clock::now();
                             for(int repeat = 0; repeat < number_of_repeats; repeat++){
@@ -182,7 +181,6 @@ int main()
                             }
                             t_end = high_resolution_clock::now();
                             time_span += duration_cast<duration<double>>(t_end - t_start);
-                            // cout<<time_span.count()<<endl;
                             for(int repeat = 0; repeat < number_of_repeats; repeat++){
                                 DestroyBST(table_of_roots[repeat]);
                             }
@@ -237,15 +235,19 @@ int main()
                             for(int j = 0; j < current_size; j++){
                                 BST_insert_node(root,data_vector[j]);
                             }
-                            t_start = high_resolution_clock::now();
+                            int *randoms_array = new int[number_of_repeats];
                             for(int repeat = 0; repeat < number_of_repeats; repeat++){
                                 int random_index = rand() % current_size;
-                                int searched_value = data_vector[random_index];
-                                BST_search_node(root,searched_value);
+                                randoms_array[repeat] = data_vector[random_index];
+                            }
+                            t_start = high_resolution_clock::now();
+                            for(int repeat = 0; repeat < number_of_repeats; repeat++){
+                                BST_search_node(root,randoms_array[repeat]);
                             }
                             t_end = high_resolution_clock::now();
                             time_span += duration_cast<duration<double>>(t_end - t_start);
                             delete root;
+                            delete[] randoms_array;
                             Result BST_result = Result(structure,operation,current_size,time_span.count(),number_of_repeats);
                             results.push_back(BST_result.toString());
                         }
